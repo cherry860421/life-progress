@@ -1,0 +1,21 @@
+{
+  "name": "生活進度簿",
+  "short_name": "生活進度簿",
+  "description": "自己的生活規劃、打卡、心情與目標紀錄",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#F5F9FC",
+  "theme_color": "#3674B5",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

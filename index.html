@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#3674B5" />
+  <title>生活進度簿 V4</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">MY LIFE TRACKER</p>
+        <h1>生活進度簿 <span>ෆ</span></h1>
+        <p id="todayLabel" class="hero-date"></p>
+        <p class="hero-note">把想做的事安排進生活裡，不用一次做到完美。</p>
+      </div>
+
+      <div class="hero-metrics">
+        <div class="metric-card">
+          <span>今日完成</span>
+          <strong id="todayProgressValue">0%</strong>
+        </div>
+        <div class="metric-card">
+          <span>本月追蹤</span>
+          <strong id="monthProgressValue">0%</strong>
+        </div>
+        <div class="metric-card">
+          <span>最佳連續</span>
+          <strong id="bestStreakValue">0 天</strong>
+        </div>
+      </div>
+    </header>
+
+    <section id="cloudBar" class="cloud-bar">
+      <div class="cloud-status-main">
+        <span class="cloud-dot" id="cloudDot"></span>
+        <div>
+          <strong id="syncStatus">本機資料已就緒</strong>
+          <span id="accountEmail" class="cloud-account">尚未登入</span>
+        </div>
+      </div>
+
+      <div class="cloud-actions">
+        <span id="lastSyncText" class="last-sync-text"></span>
+        <button id="syncNowBtn" class="secondary-btn compact-btn" type="button">↻ 立即同步</button>
+        <button id="logoutBtn" class="secondary-btn compact-btn hidden" type="button">登出</button>
+      </div>
+    </section>
+
+    <nav class="tabs" aria-label="主要導覽">
+      <button class="tab-btn active" data-view="todayView">☁️ 今天</button>
+      <button class="tab-btn" data-view="plannerView">🫧 規劃</button>
+      <button class="tab-btn" data-view="calendarView">🗓️ 月曆</button>
+      <button class="tab-btn" data-view="goalsView">🎯 目標</button>
+      <button class="tab-btn" data-view="manageView">🌿 項目</button>
+    </nav>
+
+    <main>
+      <!-- 今天 -->
+      <section id="todayView" class="view active">
+        <div class="layout">
+          <div class="stack">
+            <section class="panel quick-add-panel">
+              <div class="panel-title-row">
+                <div>
+                  <p class="section-kicker">QUICK ADD</p>
+                  <h2>📝 快速新增待辦</h2>
+                </div>
+                <span class="soft-badge">想到就記</span>
+              </div>
+
+              <div class="quick-add">
+                <input id="quickTodoInput" type="text" placeholder="例如：下班買毛線、回覆客戶..." maxlength="120" />
+                <button id="quickTodoBtn" class="primary-btn">＋ 新增</button>
+              </div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-title-row">
+                <div>
+                  <p class="section-kicker">TODAY</p>
+                  <h2>✨ 今天的進度</h2>
+                </div>
+                <span id="todayProgressText" class="soft-badge">0 / 0</span>
+              </div>
+              <div class="progress-block">
+                <div class="progress-track">
+                  <div id="todayProgressBar" class="progress-fill" style="width:0%"></div>
+                </div>
+                <div class="progress-meta">
+                  <span>今天完成的安排與打卡</span>
+                  <strong id="todayProgressPercent">0%</strong>
+                </div>
+              </div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-title-row">
+                <div>
+                  <p class="section-kicker">TODAY PLAN</p>
+                  <h2>🕰️ 今日生活規劃</h2>
+                </div>
+                <button class="text-btn" data-go-view="plannerView">安排今天 →</button>
+              </div>
+              <div id="todayPlanList" class="item-list"></div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-title-row">
+                <div>
+                  <p class="section-kicker">TRACK</p>
+                  <h2>🌱 今天要打卡</h2>
+                </div>
+                <span class="soft-badge">依週期自動顯示</span>
+              </div>
+              <div id="todayTrackerList" class="item-list"></div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-title-row">
+                <div>
+                  <p class="section-kicker">FLEXIBLE</p>
+                  <h2>🧶 本週彈性目標</h2>
+                </div>
+                <span class="soft-badge">想做的日子再做</span>
+              </div>
+              <div id="flexTrackerList" class="item-list"></div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-title-row">
+                <div>
+                  <p class="section-kicker">TO-DO</p>
+                  <h2>📌 待辦事項</h2>
+                </div>
+                <span class="soft-badge">工作 / 生活</span>
+              </div>
+              <div id="todoList" class="item-list"></div>
+            </section>
+          </div>
+
+          <aside class="stack">
+            <section class="panel">
+              <div class="panel-title-row">
+                <div>
+                  <p class="section-kicker">MONTH</p>
+                  <h2>🌊 本月追蹤進度</h2>
+                </div>
+                <span id="monthProgressLabel" class="soft-badge">0%</span>
+              </div>
+              <div class="progress-block">
+                <div class="progress-track">
+                  <div id="monthProgressBar" class="progress-fill" style="width:0%"></div>
+                </div>
+                <div class="progress-meta">
+                  <span>實際 / 目前應完成</span>
+                  <strong id="monthProgressMeta">0 / 0</strong>
+                </div>
+              </div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-title-row">
+                <div>
+                  <p class="section-kicker">STREAK</p>
+                  <h2>🔥 連續打卡</h2>
+                </div>
+                <span class="soft-badge">慢慢累積</span>
+              </div>
+              <div id="streakCards" class="streak-grid"></div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-title-row">
+                <div>
+                  <p class="section-kicker">NOTE & MOOD</p>
+                  <h2>💭 今日一句紀錄</h2>
+                </div>
+                <span class="soft-badge">自動儲存</span>
+              </div>
+
+              <div class="mood-picker-wrap">
+                <div class="field">
+                  <span>今天心情如何？</span>
+                  <div id="moodPicker" class="mood-picker">
+                    <button class="mood-btn" data-mood="happy" type="button">
+                      <span class="mood-emoji">😄</span>
+                      <span>開心</span>
+                    </button>
+                    <button class="mood-btn" data-mood="neutral" type="button">
+                      <span class="mood-emoji">😐</span>
+                      <span>普通</span>
+                    </button>
+                    <button class="mood-btn" data-mood="sad" type="button">
+                      <span class="mood-emoji">😢</span>
+                      <span>難過</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <textarea id="journalInput" placeholder="今天做了什麼？想記住什麼？"></textarea>
+            </section>
+          </aside>
+        </div>
+      </section>
+
+      <!-- 規劃 -->
+      <section id="plannerView" class="view">
+        <div class="layout planner-layout">
+          <section class="panel">
+            <div class="panel-title-row">
+              <div>
+                <p class="section-kicker">LIFE PLAN</p>
+                <h2>🫧 新增生活規劃</h2>
+              </div>
+              <span class="soft-badge">行程 / 興趣 / 休息都可以</span>
+            </div>
+
+            <div class="form-grid">
+              <label class="field">
+                <span>要安排什麼？</span>
+                <input id="planTitle" type="text" placeholder="例如：鉤針 1 小時、看書、追劇" maxlength="120" />
+              </label>
+
+              <div class="form-two">
+                <label class="field">
+                  <span>日期</span>
+                  <input id="planDate" type="date" />
+                </label>
+
+                <label class="field">
+                  <span>時段</span>
+                  <select id="planTimeMode">
+                    <option value="anytime">☁️ 任意時間</option>
+                    <option value="morning">🌤️ 早上</option>
+                    <option value="afternoon">🫧 下午</option>
+                    <option value="evening">🌙 晚上</option>
+                    <option value="specific">🕰️ 指定時間</option>
+                  </select>
+                </label>
+              </div>
+
+              <label id="planSpecificTimeField" class="field hidden">
+                <span>指定時間</span>
+                <input id="planSpecificTime" type="time" value="19:30" />
+              </label>
+
+              <button id="addPlanBtn" class="primary-btn full">＋ 加入生活規劃</button>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="panel-title-row compact-title">
+              <div>
+                <p class="section-kicker">REMINDER</p>
+                <h2>🔔 通知提醒</h2>
+              </div>
+              <span id="notificationStatus" class="soft-badge">尚未開啟</span>
+            </div>
+
+            <div class="form-grid">
+              <label class="field">
+                <span>提前提醒</span>
+                <select id="reminderLead">
+                  <option value="0">準時提醒</option>
+                  <option value="5">提前 5 分鐘</option>
+                  <option value="10">提前 10 分鐘</option>
+                  <option value="15" selected>提前 15 分鐘</option>
+                  <option value="30">提前 30 分鐘</option>
+                </select>
+              </label>
+
+              <div class="notification-actions">
+                <button id="enableNotificationsBtn" class="primary-btn">開啟通知</button>
+                <button id="testNotificationBtn" class="secondary-btn">測試提醒</button>
+              </div>
+
+              <p class="helper-text">
+                App 內提醒可直接使用；瀏覽器系統通知需在 HTTPS 網址或 localhost 開啟。
+              </p>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-title-row">
+              <div>
+                <p class="section-kicker">WEEKLY PLAN</p>
+                <h2>📅 今日 / 本週生活規劃</h2>
+              </div>
+              <div class="segmented">
+                <button class="segment-btn active" data-plan-view="today">今日</button>
+                <button class="segment-btn" data-plan-view="week">本週</button>
+              </div>
+            </div>
+            <div id="plannerDisplay"></div>
+          </section>
+        </div>
+      </section>
+
+      <!-- 月曆 -->
+      <section id="calendarView" class="view">
+        <section class="panel">
+          <div class="calendar-toolbar">
+            <div>
+              <p class="section-kicker">CALENDAR</p>
+              <h2 id="calendarTitle">🗓️ 行程月曆</h2>
+            </div>
+
+            <div class="toolbar-actions">
+              <div class="segmented">
+                <button class="segment-btn active" data-calendar-mode="week">週</button>
+                <button class="segment-btn" data-calendar-mode="month">月</button>
+              </div>
+              <button id="calendarPrev" class="icon-btn">‹</button>
+              <button id="calendarToday" class="secondary-btn">今天</button>
+              <button id="calendarNext" class="icon-btn">›</button>
+            </div>
+          </div>
+
+          <div id="calendarGrid" class="calendar-grid"></div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-title-row">
+            <div>
+              <p class="section-kicker">MOOD SUMMARY</p>
+              <h2>🌤️ 本月心情狀態</h2>
+            </div>
+            <span id="moodMonthLabel" class="soft-badge"></span>
+          </div>
+          <div id="monthlyMoodSummary" class="mood-summary"></div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-title-row">
+            <div>
+              <p class="section-kicker">DATE DETAIL</p>
+              <h2 id="selectedDateTitle">☁️ 當日安排</h2>
+            </div>
+          </div>
+
+          <div id="selectedDateJournal" class="date-journal-card hidden">
+            <div class="date-journal-head">
+              <span id="selectedDateMood" class="date-mood"></span>
+              <strong>當日一句紀錄</strong>
+            </div>
+            <p id="selectedDateJournalText"></p>
+          </div>
+
+          <div id="selectedDateDetail" class="item-list"></div>
+        </section>
+      </section>
+
+      <!-- 目標 -->
+      <section id="goalsView" class="view">
+        <div class="layout goals-layout">
+          <section class="panel">
+            <div class="panel-title-row">
+              <div>
+                <p class="section-kicker">CREATE GOAL</p>
+                <h2>🎯 建立目標</h2>
+              </div>
+              <span class="soft-badge">讓想做的事有方向</span>
+            </div>
+
+            <div class="form-grid">
+              <label class="field">
+                <span>目標名稱</span>
+                <input id="goalTitle" type="text" placeholder="例如：今年看完 20 本書" maxlength="120" />
+              </label>
+
+              <div class="form-two">
+                <label class="field">
+                  <span>目標週期</span>
+                  <select id="goalPeriod">
+                    <option value="month">本月目標</option>
+                    <option value="year">年度目標</option>
+                  </select>
+                </label>
+
+                <label class="field">
+                  <span>單位</span>
+                  <input id="goalUnit" type="text" placeholder="本 / 件 / 次 / 小時" maxlength="20" />
+                </label>
+              </div>
+
+              <div class="form-two">
+                <label class="field">
+                  <span>目標數量</span>
+                  <input id="goalTarget" type="number" min="1" value="10" />
+                </label>
+                <label class="field">
+                  <span>目前已完成</span>
+                  <input id="goalCurrent" type="number" min="0" value="0" />
+                </label>
+              </div>
+
+              <button id="addGoalBtn" class="primary-btn full">＋ 建立目標</button>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-title-row">
+              <div>
+                <p class="section-kicker">GOALS</p>
+                <h2>🌟 我的目標進度</h2>
+              </div>
+              <span class="soft-badge">月目標 / 年度目標</span>
+            </div>
+            <div id="goalList" class="goal-list"></div>
+          </section>
+        </div>
+      </section>
+
+      <!-- 管理 -->
+      <section id="manageView" class="view">
+        <div class="layout manage-layout">
+          <section class="panel">
+            <div class="panel-title-row">
+              <div>
+                <p class="section-kicker">TRACKER</p>
+                <h2>🌿 建立追蹤項目</h2>
+              </div>
+              <span class="soft-badge">日 / 週 / 月 / 自訂</span>
+            </div>
+
+            <div class="form-grid">
+              <div class="form-two">
+                <label class="field">
+                  <span>可愛 Icon</span>
+                  <select id="trackerIcon">
+                    <option value="🌿">🌿 習慣</option>
+                    <option value="📚">📚 閱讀</option>
+                    <option value="🧶">🧶 鉤針</option>
+                    <option value="🎬">🎬 追劇</option>
+                    <option value="💧">💧 喝水</option>
+                    <option value="☕">☕ 休息</option>
+                    <option value="🧹">🧹 整理</option>
+                    <option value="💼">💼 工作</option>
+                    <option value="✨">✨ 其他</option>
+                  </select>
+                </label>
+
+                <label class="field">
+                  <span>項目名稱</span>
+                  <input id="trackerTitle" type="text" placeholder="例如：閱讀 20 分鐘" maxlength="120" />
+                </label>
+              </div>
+
+              <div class="form-two">
+                <label class="field">
+                  <span>目標週期</span>
+                  <select id="trackerCycle">
+                    <option value="day">每天</option>
+                    <option value="week">每週</option>
+                    <option value="month">每月</option>
+                    <option value="custom">自訂</option>
+                  </select>
+                </label>
+
+                <label class="field">
+                  <span>時段</span>
+                  <select id="trackerTimeMode">
+                    <option value="anytime">☁️ 任意</option>
+                    <option value="morning">🌤️ 早上</option>
+                    <option value="afternoon">🫧 下午</option>
+                    <option value="evening">🌙 晚上</option>
+                    <option value="specific">🕰️ 指定時間</option>
+                  </select>
+                </label>
+              </div>
+
+              <label id="trackerSpecificTimeField" class="field hidden">
+                <span>指定時間</span>
+                <input id="trackerSpecificTime" type="time" value="20:00" />
+              </label>
+
+              <div id="weekCycleFields" class="cycle-box hidden">
+                <label class="field">
+                  <span>每週目標次數</span>
+                  <input id="weeklyTarget" type="number" min="1" max="7" value="2" />
+                </label>
+                <div class="field">
+                  <span>固定星期（可不選＝彈性完成）</span>
+                  <div id="weekdayPicker" class="weekday-picker">
+                    <label><input type="checkbox" value="1">一</label>
+                    <label><input type="checkbox" value="2">二</label>
+                    <label><input type="checkbox" value="3">三</label>
+                    <label><input type="checkbox" value="4">四</label>
+                    <label><input type="checkbox" value="5">五</label>
+                    <label><input type="checkbox" value="6">六</label>
+                    <label><input type="checkbox" value="0">日</label>
+                  </div>
+                </div>
+              </div>
+
+              <div id="monthCycleFields" class="cycle-box hidden">
+                <label class="field">
+                  <span>每月幾號</span>
+                  <input id="monthDay" type="number" min="1" max="31" value="1" />
+                </label>
+              </div>
+
+              <div id="customCycleFields" class="cycle-box hidden">
+                <div class="form-two">
+                  <label class="field">
+                    <span>每隔幾天</span>
+                    <input id="customIntervalDays" type="number" min="1" max="365" value="3" />
+                  </label>
+                  <label class="field">
+                    <span>從哪天開始</span>
+                    <input id="customStartDate" type="date" />
+                  </label>
+                </div>
+              </div>
+
+              <button id="addTrackerBtn" class="primary-btn full">＋ 建立追蹤項目</button>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-title-row">
+              <div>
+                <p class="section-kicker">MANAGE</p>
+                <h2>🪴 目前追蹤項目</h2>
+              </div>
+              <span class="soft-badge">可編輯 / 刪除</span>
+            </div>
+            <div id="manageTrackerList" class="manage-list"></div>
+
+            <div class="divider"></div>
+
+            <div class="panel-title-row">
+              <div>
+                <p class="section-kicker">TO-DO</p>
+                <h2>📌 待辦管理</h2>
+              </div>
+            </div>
+            <div id="manageTodoList" class="manage-list"></div>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <footer>生活進度簿 V4 ・ Soft Blue Life Planner・Cloud Sync</footer>
+  </div>
+
+
+  <!-- 雲端登入 -->
+  <div id="authModal" class="auth-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+    <div class="auth-card">
+      <div class="auth-logo">☁️</div>
+      <p class="section-kicker">CLOUD SYNC</p>
+      <h2 id="authTitle">登入生活進度簿</h2>
+      <p class="auth-description">
+        使用同一組 Email 與密碼登入手機、平板與電腦，就會共用同一份紀錄。
+      </p>
+
+      <div class="form-grid">
+        <label class="field">
+          <span>Email</span>
+          <input id="authEmail" type="email" autocomplete="email" placeholder="your@email.com" />
+        </label>
+
+        <label class="field">
+          <span>密碼</span>
+          <input id="authPassword" type="password" autocomplete="current-password" placeholder="至少 6 碼" />
+        </label>
+
+        <div id="authMessage" class="auth-message hidden"></div>
+
+        <button id="signInBtn" class="primary-btn full" type="button">登入</button>
+
+        <div class="auth-secondary-actions">
+          <button id="signUpBtn" class="secondary-btn" type="button">第一次使用：建立帳號</button>
+          <button id="offlineModeBtn" class="text-btn" type="button">先用本機模式</button>
+        </div>
+      </div>
+
+      <div class="auth-hint">
+        <strong>提醒：</strong>請只把 Supabase 的 <b>Publishable key</b> 放進設定檔，永遠不要放 Secret / service_role key。
+      </div>
+    </div>
+  </div>
+
+  <!-- 編輯追蹤項目 -->
+  <div id="editTrackerModal" class="modal-backdrop hidden" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <div class="panel-title-row">
+        <div>
+          <p class="section-kicker">EDIT</p>
+          <h2>🌿 編輯追蹤項目</h2>
+        </div>
+        <button class="icon-btn" data-close-modal="editTrackerModal">×</button>
+      </div>
+
+      <div class="form-grid">
+        <label class="field">
+          <span>名稱</span>
+          <input id="editTrackerTitle" type="text" maxlength="120" />
+        </label>
+        <label class="field">
+          <span>Icon</span>
+          <select id="editTrackerIcon">
+            <option value="🌿">🌿</option><option value="📚">📚</option><option value="🧶">🧶</option>
+            <option value="🎬">🎬</option><option value="💧">💧</option><option value="☕">☕</option>
+            <option value="🧹">🧹</option><option value="💼">💼</option><option value="✨">✨</option>
+          </select>
+        </label>
+        <div class="modal-actions">
+          <button class="secondary-btn" data-close-modal="editTrackerModal">取消</button>
+          <button id="saveTrackerEditBtn" class="primary-btn">儲存修改</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 編輯待辦 -->
+  <div id="editTodoModal" class="modal-backdrop hidden" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <div class="panel-title-row">
+        <div>
+          <p class="section-kicker">EDIT</p>
+          <h2>📌 編輯待辦</h2>
+        </div>
+        <button class="icon-btn" data-close-modal="editTodoModal">×</button>
+      </div>
+      <div class="form-grid">
+        <label class="field">
+          <span>待辦內容</span>
+          <input id="editTodoTitle" type="text" maxlength="120" />
+        </label>
+        <div class="modal-actions">
+          <button class="secondary-btn" data-close-modal="editTodoModal">取消</button>
+          <button id="saveTodoEditBtn" class="primary-btn">儲存修改</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toastHost" class="toast-host" aria-live="polite"></div>
+
+  <!-- Supabase 官方 JavaScript SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- 只需要在 config.js 填入 Project URL / Publishable key -->
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
