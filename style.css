@@ -423,30 +423,95 @@ input:focus, select:focus, textarea:focus {
 
 .week-plan-grid {
   display: grid;
-  grid-template-columns: repeat(7, minmax(150px, 1fr));
-  gap: 10px;
-  overflow-x: auto;
-  padding-bottom: 4px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  width: 100%;
 }
 
 .week-day {
-  min-height: 230px;
-  padding: 12px;
+  min-width: 0;
+  min-height: 150px;
+  padding: 15px;
   border: 1px solid var(--border);
-  border-radius: 16px;
+  border-radius: 18px;
   background: #FAFCFE;
 }
 
-.week-day.today { border: 2px solid var(--blue-deep); background: #F0F7FC; }
-.week-day h3 { margin: 0 0 10px; color: var(--blue-deep); font-size: .95rem; }
-.week-plan-item {
-  padding: 8px;
-  margin-bottom: 7px;
-  border-radius: 10px;
-  background: var(--blue-mist);
-  font-size: .74rem;
+.week-day.today {
+  border: 2px solid var(--blue-deep);
+  background: #F0F7FC;
+  box-shadow: 0 8px 20px rgba(54,116,181,.08);
 }
-.week-plan-item.done { opacity: .55; text-decoration: line-through; }
+
+.week-day-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.week-day h3 {
+  margin: 0;
+  color: var(--blue-deep);
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.week-day-count {
+  flex: 0 0 auto;
+  color: var(--muted);
+  font-size: .72rem;
+  font-weight: 850;
+}
+
+.week-plan-list {
+  display: grid;
+  gap: 8px;
+}
+
+.week-plan-item {
+  min-width: 0;
+  margin: 0;
+  padding: 10px 11px;
+  border-radius: 12px;
+  background: var(--blue-mist);
+}
+
+.week-plan-item.done {
+  opacity: .58;
+}
+
+.week-plan-item.done .week-plan-title {
+  text-decoration: line-through;
+}
+
+.week-plan-title {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  color: var(--text);
+  font-size: .86rem;
+  font-weight: 850;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.week-plan-time {
+  margin-top: 4px;
+  padding-left: 25px;
+  color: var(--muted);
+  font-size: .74rem;
+  line-height: 1.4;
+}
+
+.week-empty {
+  display: flex;
+  align-items: center;
+  min-height: 52px;
+  color: var(--muted);
+  font-size: .78rem;
+}
 
 .toolbar-actions {
   display: flex;
@@ -1129,5 +1194,759 @@ footer {
 
   .auth-card {
     padding: 22px 18px;
+  }
+}
+
+
+/* =========================
+   V4.1 底部導覽加大
+   ========================= */
+.tabs {
+  width: min(800px, calc(100% - 18px));
+  min-height: 78px;
+  padding: 7px 8px calc(7px + env(safe-area-inset-bottom));
+  bottom: max(8px, env(safe-area-inset-bottom));
+  gap: 7px;
+}
+
+.tab-btn {
+  min-height: 62px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 7px 5px;
+  line-height: 1.05;
+}
+
+.nav-icon {
+  display: block;
+  font-size: 1.42rem;
+  line-height: 1;
+}
+
+.nav-label {
+  display: block;
+  font-size: .88rem;
+  font-weight: 900;
+  letter-spacing: .01em;
+}
+
+.app-shell {
+  padding-bottom: 155px;
+}
+
+/* =========================
+   V4.1 我的書房
+   ========================= */
+.goals-hub-panel {
+  margin-bottom: 18px;
+  padding-top: 18px;
+  padding-bottom: 18px;
+}
+
+.goals-hub-head {
+  align-items: center;
+  margin-bottom: 0;
+}
+
+.goals-segmented {
+  flex-shrink: 0;
+}
+
+.goal-tab-content.hidden {
+  display: none !important;
+}
+
+.book-list {
+  display: grid;
+  gap: 14px;
+}
+
+.book-card {
+  padding: 17px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: linear-gradient(180deg, #FCFEFF, #F6FAFD);
+}
+
+.book-card.completed {
+  background: linear-gradient(180deg, #F4FAF7, #FBFDFC);
+}
+
+.book-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.book-title-wrap {
+  min-width: 0;
+}
+
+.book-title {
+  margin: 0;
+  color: var(--blue-deep);
+  font-size: 1.08rem;
+  line-height: 1.45;
+  word-break: break-word;
+}
+
+.book-author {
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: .78rem;
+}
+
+.book-progress-number {
+  margin: 13px 0 9px;
+  color: var(--blue-deep);
+  font-size: 1.22rem;
+  font-weight: 950;
+}
+
+.book-progress-number small {
+  color: var(--muted);
+  font-size: .72rem;
+  font-weight: 800;
+}
+
+.book-update-row {
+  display: grid;
+  grid-template-columns: minmax(130px, .75fr) auto auto;
+  gap: 8px;
+  margin-top: 13px;
+  align-items: end;
+}
+
+.book-page-input {
+  min-height: 44px;
+}
+
+.book-meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 9px;
+  color: var(--muted);
+  font-size: .72rem;
+}
+
+.book-quote-count {
+  color: var(--blue-deep);
+  font-weight: 850;
+}
+
+.quote-modal-card {
+  width: min(680px, 100%);
+  max-height: min(86vh, 780px);
+  overflow-y: auto;
+}
+
+.quote-add-box textarea {
+  min-height: 100px;
+}
+
+.quote-list {
+  display: grid;
+  gap: 11px;
+}
+
+.quote-card {
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: #FAFCFE;
+}
+
+.quote-text {
+  margin: 0;
+  color: var(--text);
+  font-size: .9rem;
+  line-height: 1.75;
+  white-space: pre-wrap;
+}
+
+.quote-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: .72rem;
+  flex-wrap: wrap;
+}
+
+.quote-note {
+  margin-top: 7px;
+  color: var(--blue-deep);
+  font-size: .76rem;
+}
+
+@media (max-width: 720px) {
+  .tabs {
+    width: calc(100% - 12px);
+    min-height: 76px;
+    gap: 3px;
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+
+  .tab-btn {
+    min-height: 60px;
+    padding: 6px 2px;
+  }
+
+  .nav-icon {
+    font-size: 1.34rem;
+  }
+
+  .nav-label {
+    font-size: .82rem;
+  }
+
+  .goals-hub-head {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .goals-segmented {
+    width: 100%;
+  }
+
+  .goals-segmented .segment-btn {
+    flex: 1;
+  }
+
+  .book-update-row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .book-update-row .book-page-field {
+    grid-column: 1 / -1;
+  }
+}
+
+
+/* =========================
+   V4.2 生活體驗計劃：閱讀連動 / 月曆回顧 / 佳句優化
+   ========================= */
+
+.today-reading-list {
+  display: grid;
+  gap: 12px;
+}
+
+.today-book-card {
+  padding: 15px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: linear-gradient(180deg, #FCFEFF, #F5FAFD);
+}
+
+.today-book-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.today-book-title {
+  color: var(--blue-deep);
+  font-weight: 950;
+  line-height: 1.5;
+}
+
+.today-book-author {
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: .75rem;
+}
+
+.today-book-update {
+  display: grid;
+  grid-template-columns: minmax(110px, 1fr) auto;
+  gap: 9px;
+  align-items: end;
+  margin-top: 11px;
+}
+
+.today-book-update .field > span {
+  font-size: .76rem;
+}
+
+.today-book-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: .72rem;
+}
+
+.day-number-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5px;
+}
+
+.day-mood {
+  font-size: .96rem;
+  line-height: 1;
+}
+
+.day-activity-icons {
+  display: flex;
+  gap: 3px;
+  align-items: center;
+  min-height: 18px;
+  font-size: .78rem;
+  opacity: .9;
+}
+
+.date-activity-section {
+  margin-bottom: 16px;
+}
+
+.date-section-label {
+  margin-bottom: 9px;
+  color: var(--blue-deep);
+  font-size: .83rem;
+  font-weight: 950;
+}
+
+.date-activity-list {
+  display: grid;
+  gap: 10px;
+}
+
+.history-event-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 13px 14px;
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  background: #F8FBFE;
+}
+
+.history-event-icon {
+  flex: 0 0 auto;
+  font-size: 1.25rem;
+}
+
+.history-event-title {
+  color: var(--blue-deep);
+  font-size: .9rem;
+  font-weight: 900;
+  line-height: 1.55;
+}
+
+.history-event-sub {
+  margin-top: 2px;
+  color: var(--muted);
+  font-size: .78rem;
+  line-height: 1.55;
+}
+
+.quote-modal-card {
+  width: min(720px, 100%);
+  padding-bottom: 24px;
+}
+
+.quote-compose-section,
+.quote-record-section {
+  display: grid;
+  gap: 12px;
+}
+
+.quote-record-section {
+  margin-top: 22px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+
+.quote-section-title {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.quote-section-icon {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  flex: 0 0 auto;
+  border-radius: 12px;
+  background: var(--blue-mist);
+  font-size: 1.1rem;
+}
+
+.quote-section-title strong {
+  display: block;
+  color: var(--blue-deep);
+  font-size: .95rem;
+}
+
+.quote-section-title small {
+  display: block;
+  margin-top: 1px;
+  color: var(--muted);
+  font-size: .72rem;
+  line-height: 1.5;
+}
+
+.quote-add-box {
+  display: grid;
+  gap: 14px;
+  padding: 16px;
+  border: 1px solid #D9E8F3;
+  border-radius: 18px;
+  background: #F8FBFE;
+}
+
+.quote-add-box textarea {
+  min-height: 118px;
+}
+
+.quote-extra-fields {
+  align-items: end;
+}
+
+.quote-submit-row {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 2px;
+}
+
+.quote-submit-btn {
+  min-width: 150px;
+  margin: 0;
+}
+
+.quote-record-title {
+  margin-bottom: 2px;
+}
+
+.quote-card {
+  padding: 16px;
+}
+
+.quote-main-row {
+  display: flex;
+  gap: 9px;
+  align-items: flex-start;
+}
+
+.quote-card-icon {
+  flex: 0 0 auto;
+  font-size: 1.15rem;
+}
+
+.quote-detail-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: .72rem;
+}
+
+.quote-detail-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.quote-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 9px 10px;
+  margin-top: 10px;
+  border-radius: 11px;
+  color: var(--blue-deep);
+  background: var(--blue-mist);
+  font-size: .76rem;
+  line-height: 1.6;
+}
+
+.quote-meta {
+  align-items: center;
+  margin-top: 11px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--border);
+}
+
+@media (max-width: 720px) {
+  .today-book-update {
+    grid-template-columns: 1fr;
+  }
+
+  .quote-extra-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .quote-submit-row,
+  .quote-submit-btn {
+    width: 100%;
+  }
+
+  .day-mood {
+    font-size: .86rem;
+  }
+
+  .day-activity-icons {
+    font-size: .72rem;
+  }
+}
+
+
+/* =========================
+   V4.3 Mobile-first：先看清單，再新增
+   ========================= */
+.compact-action-panel {
+  padding-top: 18px;
+  padding-bottom: 18px;
+}
+
+.compact-action-panel .panel-title-row {
+  margin-bottom: 0;
+}
+
+.panel-helper {
+  margin: 5px 0 0;
+  max-width: 620px;
+  color: var(--muted);
+  font-size: .78rem;
+  line-height: 1.6;
+}
+
+.modal-trigger-btn {
+  flex: 0 0 auto;
+  min-width: 132px;
+}
+
+.mobile-form-modal {
+  width: min(560px, 100%);
+  max-height: min(86vh, 760px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.mobile-modal-form {
+  gap: 15px;
+}
+
+.mobile-modal-form .field > span {
+  font-size: .88rem;
+}
+
+.mobile-modal-form input,
+.mobile-modal-form select,
+.mobile-modal-form textarea {
+  font-size: .95rem;
+}
+
+.modal-save-btn {
+  position: sticky;
+  bottom: -1px;
+  z-index: 2;
+  margin-top: 3px;
+  box-shadow: 0 -8px 20px rgba(255,255,255,.92);
+}
+
+.compact-textarea {
+  min-height: 92px;
+}
+
+.quote-record-only-modal {
+  width: min(680px, 100%);
+  max-height: min(88vh, 840px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.quote-modal-header {
+  flex: 0 0 auto;
+}
+
+.quote-header-count {
+  display: block;
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: .76rem;
+}
+
+.quote-toolbar {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+  padding: 12px 13px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface-soft);
+}
+
+.quote-toolbar p {
+  margin: 0;
+  color: var(--muted);
+  font-size: .76rem;
+  line-height: 1.55;
+}
+
+.quote-record-section-only {
+  min-height: 0;
+  overflow-y: auto;
+  padding-right: 3px;
+}
+
+.quote-record-section-only .quote-list {
+  padding-bottom: 8px;
+}
+
+/* 佳句卡片更像閱讀收藏而不是表單 */
+.quote-card {
+  padding: 16px !important;
+}
+
+.quote-main-row {
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.quote-card-icon {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 auto;
+  border-radius: 12px;
+  background: var(--blue-mist);
+  font-size: 1rem;
+}
+
+.quote-text {
+  font-size: .94rem !important;
+  line-height: 1.75 !important;
+}
+
+.quote-note {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #F7FAFD;
+  font-size: .8rem;
+  line-height: 1.65;
+}
+
+@media (max-width: 720px) {
+  .compact-mobile-title {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .modal-trigger-btn {
+    width: 100%;
+    min-height: 48px;
+  }
+
+  .mobile-form-modal {
+    align-self: end;
+    width: 100%;
+    max-height: 90vh;
+    margin: 0;
+    border-radius: 24px 24px 0 0;
+    padding: 20px 17px calc(20px + env(safe-area-inset-bottom));
+  }
+
+  .modal-backdrop:has(.mobile-form-modal) {
+    align-items: end;
+    padding: 0;
+  }
+
+  .quote-record-only-modal {
+    width: 100%;
+    max-height: 90vh;
+    border-radius: 24px 24px 0 0;
+    padding-bottom: calc(18px + env(safe-area-inset-bottom));
+  }
+
+  .modal-backdrop:has(.quote-record-only-modal) {
+    align-items: end;
+    padding: 0;
+  }
+
+  .quote-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .quote-toolbar .primary-btn {
+    width: 100%;
+    min-height: 48px;
+  }
+
+  .quote-text {
+    font-size: 1rem !important;
+  }
+}
+
+
+/* V4.3.1 規劃頁－本週版面修正 */
+@media (min-width: 1100px) {
+  .week-plan-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .week-plan-grid {
+    grid-template-columns: 1fr;
+    gap: 11px;
+  }
+
+  .week-day {
+    min-height: 0;
+    padding: 13px;
+    border-radius: 16px;
+  }
+
+  .week-day-header {
+    margin-bottom: 9px;
+  }
+
+  .week-day h3 {
+    font-size: .98rem;
+  }
+
+  .week-plan-item {
+    padding: 10px;
+  }
+
+  .week-plan-title {
+    font-size: .9rem;
+  }
+
+  .week-plan-time {
+    padding-left: 25px;
+    font-size: .78rem;
+  }
+
+  .week-empty {
+    min-height: 34px;
   }
 }

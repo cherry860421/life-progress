@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#3674B5" />
-  <title>生活進度簿 V4</title>
+  <title>生活體驗計劃 V4.3.1</title>
   <link rel="manifest" href="manifest.json" />
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -13,7 +13,7 @@
     <header class="hero">
       <div class="hero-copy">
         <p class="eyebrow">MY LIFE TRACKER</p>
-        <h1>生活進度簿 <span>ෆ</span></h1>
+        <h1>生活體驗計劃 <span>ෆ</span></h1>
         <p id="todayLabel" class="hero-date"></p>
         <p class="hero-note">把想做的事安排進生活裡，不用一次做到完美。</p>
       </div>
@@ -51,11 +51,11 @@
     </section>
 
     <nav class="tabs" aria-label="主要導覽">
-      <button class="tab-btn active" data-view="todayView">☁️ 今天</button>
-      <button class="tab-btn" data-view="plannerView">🫧 規劃</button>
-      <button class="tab-btn" data-view="calendarView">🗓️ 月曆</button>
-      <button class="tab-btn" data-view="goalsView">🎯 目標</button>
-      <button class="tab-btn" data-view="manageView">🌿 項目</button>
+      <button class="tab-btn active" data-view="todayView"><span class="nav-icon">☁️</span><span class="nav-label">今天</span></button>
+      <button class="tab-btn" data-view="plannerView"><span class="nav-icon">🫧</span><span class="nav-label">規劃</span></button>
+      <button class="tab-btn" data-view="calendarView"><span class="nav-icon">🗓️</span><span class="nav-label">月曆</span></button>
+      <button class="tab-btn" data-view="goalsView"><span class="nav-icon">🎯</span><span class="nav-label">目標</span></button>
+      <button class="tab-btn" data-view="manageView"><span class="nav-icon">🌿</span><span class="nav-label">項目</span></button>
     </nav>
 
     <main>
@@ -95,6 +95,17 @@
                   <strong id="todayProgressPercent">0%</strong>
                 </div>
               </div>
+            </section>
+
+            <section class="panel today-reading-panel">
+              <div class="panel-title-row">
+                <div>
+                  <p class="section-kicker">TODAY READING</p>
+                  <h2>📚 今日閱讀</h2>
+                </div>
+                <button class="text-btn" data-action="open-library-tab">前往書房 →</button>
+              </div>
+              <div id="todayReadingList" class="today-reading-list"></div>
             </section>
 
             <section class="panel">
@@ -211,45 +222,14 @@
       <!-- 規劃 -->
       <section id="plannerView" class="view">
         <div class="layout planner-layout">
-          <section class="panel">
-            <div class="panel-title-row">
+          <section class="panel compact-action-panel">
+            <div class="panel-title-row compact-mobile-title">
               <div>
                 <p class="section-kicker">LIFE PLAN</p>
-                <h2>🫧 新增生活規劃</h2>
+                <h2>🫧 生活規劃</h2>
+                <p class="panel-helper">先看今天與本週安排，需要新增時再開啟輸入視窗。</p>
               </div>
-              <span class="soft-badge">行程 / 興趣 / 休息都可以</span>
-            </div>
-
-            <div class="form-grid">
-              <label class="field">
-                <span>要安排什麼？</span>
-                <input id="planTitle" type="text" placeholder="例如：鉤針 1 小時、看書、追劇" maxlength="120" />
-              </label>
-
-              <div class="form-two">
-                <label class="field">
-                  <span>日期</span>
-                  <input id="planDate" type="date" />
-                </label>
-
-                <label class="field">
-                  <span>時段</span>
-                  <select id="planTimeMode">
-                    <option value="anytime">☁️ 任意時間</option>
-                    <option value="morning">🌤️ 早上</option>
-                    <option value="afternoon">🫧 下午</option>
-                    <option value="evening">🌙 晚上</option>
-                    <option value="specific">🕰️ 指定時間</option>
-                  </select>
-                </label>
-              </div>
-
-              <label id="planSpecificTimeField" class="field hidden">
-                <span>指定時間</span>
-                <input id="planSpecificTime" type="time" value="19:30" />
-              </label>
-
-              <button id="addPlanBtn" class="primary-btn full">＋ 加入生活規劃</button>
+              <button class="primary-btn modal-trigger-btn" type="button" data-open-modal="addPlanModal">＋ 新增規劃</button>
             </div>
 
             <div class="divider"></div>
@@ -351,174 +331,94 @@
             <p id="selectedDateJournalText"></p>
           </div>
 
+          <div id="selectedDateActivity" class="date-activity-section hidden">
+            <div class="date-section-label">✨ 當日活動回顧</div>
+            <div id="selectedDateActivityList" class="date-activity-list"></div>
+          </div>
+
           <div id="selectedDateDetail" class="item-list"></div>
         </section>
       </section>
 
-      <!-- 目標 -->
+      <!-- 目標 / 書房 -->
       <section id="goalsView" class="view">
-        <div class="layout goals-layout">
-          <section class="panel">
-            <div class="panel-title-row">
-              <div>
-                <p class="section-kicker">CREATE GOAL</p>
-                <h2>🎯 建立目標</h2>
-              </div>
-              <span class="soft-badge">讓想做的事有方向</span>
+        <section class="panel goals-hub-panel">
+          <div class="panel-title-row goals-hub-head">
+            <div>
+              <p class="section-kicker">GOALS & READING</p>
+              <h2>🌟 目標與閱讀</h2>
             </div>
-
-            <div class="form-grid">
-              <label class="field">
-                <span>目標名稱</span>
-                <input id="goalTitle" type="text" placeholder="例如：今年看完 20 本書" maxlength="120" />
-              </label>
-
-              <div class="form-two">
-                <label class="field">
-                  <span>目標週期</span>
-                  <select id="goalPeriod">
-                    <option value="month">本月目標</option>
-                    <option value="year">年度目標</option>
-                  </select>
-                </label>
-
-                <label class="field">
-                  <span>單位</span>
-                  <input id="goalUnit" type="text" placeholder="本 / 件 / 次 / 小時" maxlength="20" />
-                </label>
-              </div>
-
-              <div class="form-two">
-                <label class="field">
-                  <span>目標數量</span>
-                  <input id="goalTarget" type="number" min="1" value="10" />
-                </label>
-                <label class="field">
-                  <span>目前已完成</span>
-                  <input id="goalCurrent" type="number" min="0" value="0" />
-                </label>
-              </div>
-
-              <button id="addGoalBtn" class="primary-btn full">＋ 建立目標</button>
+            <div class="segmented goals-segmented">
+              <button class="segment-btn active" data-goal-tab="goals">🎯 目標</button>
+              <button class="segment-btn" data-goal-tab="library">📚 我的書房</button>
             </div>
-          </section>
+          </div>
+        </section>
 
-          <section class="panel">
-            <div class="panel-title-row">
-              <div>
-                <p class="section-kicker">GOALS</p>
-                <h2>🌟 我的目標進度</h2>
+        <div id="goalsTabContent" class="goal-tab-content">
+          <div class="layout goals-layout">
+            <section class="panel compact-action-panel">
+              <div class="panel-title-row compact-mobile-title">
+                <div>
+                  <p class="section-kicker">GOALS</p>
+                  <h2>🎯 我的目標</h2>
+                  <p class="panel-helper">先查看目標進度，要建立新目標時再開啟輸入視窗。</p>
+                </div>
+                <button class="primary-btn modal-trigger-btn" type="button" data-open-modal="addGoalModal">＋ 新增目標</button>
               </div>
-              <span class="soft-badge">月目標 / 年度目標</span>
-            </div>
-            <div id="goalList" class="goal-list"></div>
-          </section>
+            </section>
+
+            <section class="panel">
+              <div class="panel-title-row">
+                <div>
+                  <p class="section-kicker">GOALS</p>
+                  <h2>🌟 我的目標進度</h2>
+                </div>
+                <span class="soft-badge">月目標 / 年度目標</span>
+              </div>
+              <div id="goalList" class="goal-list"></div>
+            </section>
+          </div>
+        </div>
+
+        <div id="libraryTabContent" class="goal-tab-content hidden">
+          <div class="layout reading-layout">
+            <section class="panel compact-action-panel">
+              <div class="panel-title-row compact-mobile-title">
+                <div>
+                  <p class="section-kicker">MY LIBRARY</p>
+                  <h2>📚 我的書房</h2>
+                  <p class="panel-helper">閱讀清單直接呈現，需要加入新書時再開啟輸入視窗。</p>
+                </div>
+                <button class="primary-btn modal-trigger-btn" type="button" data-open-modal="addBookModal">＋ 加入新書</button>
+              </div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-title-row">
+                <div>
+                  <p class="section-kicker">MY LIBRARY</p>
+                  <h2>📚 我的閱讀清單</h2>
+                </div>
+                <span id="readingSummaryBadge" class="soft-badge">0 本閱讀中</span>
+              </div>
+              <div id="bookList" class="book-list"></div>
+            </section>
+          </div>
         </div>
       </section>
 
       <!-- 管理 -->
       <section id="manageView" class="view">
         <div class="layout manage-layout">
-          <section class="panel">
-            <div class="panel-title-row">
+          <section class="panel compact-action-panel">
+            <div class="panel-title-row compact-mobile-title">
               <div>
                 <p class="section-kicker">TRACKER</p>
-                <h2>🌿 建立追蹤項目</h2>
+                <h2>🌿 追蹤項目</h2>
+                <p class="panel-helper">平常只看目前項目，需要新增時再開啟設定視窗。</p>
               </div>
-              <span class="soft-badge">日 / 週 / 月 / 自訂</span>
-            </div>
-
-            <div class="form-grid">
-              <div class="form-two">
-                <label class="field">
-                  <span>可愛 Icon</span>
-                  <select id="trackerIcon">
-                    <option value="🌿">🌿 習慣</option>
-                    <option value="📚">📚 閱讀</option>
-                    <option value="🧶">🧶 鉤針</option>
-                    <option value="🎬">🎬 追劇</option>
-                    <option value="💧">💧 喝水</option>
-                    <option value="☕">☕ 休息</option>
-                    <option value="🧹">🧹 整理</option>
-                    <option value="💼">💼 工作</option>
-                    <option value="✨">✨ 其他</option>
-                  </select>
-                </label>
-
-                <label class="field">
-                  <span>項目名稱</span>
-                  <input id="trackerTitle" type="text" placeholder="例如：閱讀 20 分鐘" maxlength="120" />
-                </label>
-              </div>
-
-              <div class="form-two">
-                <label class="field">
-                  <span>目標週期</span>
-                  <select id="trackerCycle">
-                    <option value="day">每天</option>
-                    <option value="week">每週</option>
-                    <option value="month">每月</option>
-                    <option value="custom">自訂</option>
-                  </select>
-                </label>
-
-                <label class="field">
-                  <span>時段</span>
-                  <select id="trackerTimeMode">
-                    <option value="anytime">☁️ 任意</option>
-                    <option value="morning">🌤️ 早上</option>
-                    <option value="afternoon">🫧 下午</option>
-                    <option value="evening">🌙 晚上</option>
-                    <option value="specific">🕰️ 指定時間</option>
-                  </select>
-                </label>
-              </div>
-
-              <label id="trackerSpecificTimeField" class="field hidden">
-                <span>指定時間</span>
-                <input id="trackerSpecificTime" type="time" value="20:00" />
-              </label>
-
-              <div id="weekCycleFields" class="cycle-box hidden">
-                <label class="field">
-                  <span>每週目標次數</span>
-                  <input id="weeklyTarget" type="number" min="1" max="7" value="2" />
-                </label>
-                <div class="field">
-                  <span>固定星期（可不選＝彈性完成）</span>
-                  <div id="weekdayPicker" class="weekday-picker">
-                    <label><input type="checkbox" value="1">一</label>
-                    <label><input type="checkbox" value="2">二</label>
-                    <label><input type="checkbox" value="3">三</label>
-                    <label><input type="checkbox" value="4">四</label>
-                    <label><input type="checkbox" value="5">五</label>
-                    <label><input type="checkbox" value="6">六</label>
-                    <label><input type="checkbox" value="0">日</label>
-                  </div>
-                </div>
-              </div>
-
-              <div id="monthCycleFields" class="cycle-box hidden">
-                <label class="field">
-                  <span>每月幾號</span>
-                  <input id="monthDay" type="number" min="1" max="31" value="1" />
-                </label>
-              </div>
-
-              <div id="customCycleFields" class="cycle-box hidden">
-                <div class="form-two">
-                  <label class="field">
-                    <span>每隔幾天</span>
-                    <input id="customIntervalDays" type="number" min="1" max="365" value="3" />
-                  </label>
-                  <label class="field">
-                    <span>從哪天開始</span>
-                    <input id="customStartDate" type="date" />
-                  </label>
-                </div>
-              </div>
-
-              <button id="addTrackerBtn" class="primary-btn full">＋ 建立追蹤項目</button>
+              <button class="primary-btn modal-trigger-btn" type="button" data-open-modal="addTrackerModal">＋ 新增項目</button>
             </div>
           </section>
 
@@ -546,7 +446,7 @@
       </section>
     </main>
 
-    <footer>生活進度簿 V4 ・ Soft Blue Life Planner・Cloud Sync</footer>
+    <footer>生活體驗計劃 V4.3.1 ・ Soft Blue Life Planner・Cloud Sync</footer>
   </div>
 
 
@@ -555,7 +455,7 @@
     <div class="auth-card">
       <div class="auth-logo">☁️</div>
       <p class="section-kicker">CLOUD SYNC</p>
-      <h2 id="authTitle">登入生活進度簿</h2>
+      <h2 id="authTitle">登入生活體驗計劃</h2>
       <p class="auth-description">
         使用同一組 Email 與密碼登入手機、平板與電腦，就會共用同一份紀錄。
       </p>
@@ -583,6 +483,132 @@
 
       <div class="auth-hint">
         <strong>提醒：</strong>請只把 Supabase 的 <b>Publishable key</b> 放進設定檔，永遠不要放 Secret / service_role key。
+      </div>
+    </div>
+  </div>
+
+
+  <!-- 書籍佳句：先看收藏紀錄 -->
+  <div id="quoteModal" class="modal-backdrop hidden" role="dialog" aria-modal="true">
+    <div class="modal-card quote-modal-card quote-record-only-modal">
+      <div class="panel-title-row quote-modal-header">
+        <div>
+          <p class="section-kicker">BOOK QUOTES</p>
+          <h2 id="quoteModalTitle">💬 佳句收藏</h2>
+          <small id="quoteRecordCount" class="quote-header-count">目前收藏 0 句</small>
+        </div>
+        <button class="icon-btn" data-close-modal="quoteModal">×</button>
+      </div>
+
+      <div class="quote-toolbar">
+        <p>📚 這裡只顯示已收藏的佳句，閱讀時要新增再點右側按鈕。</p>
+        <button id="openAddQuoteBtn" class="primary-btn" type="button">＋ 新增佳句</button>
+      </div>
+
+      <section class="quote-record-section quote-record-section-only">
+        <div id="quoteList" class="quote-list"></div>
+      </section>
+    </div>
+  </div>
+
+  <!-- 新增佳句 -->
+  <div id="addQuoteModal" class="modal-backdrop hidden" role="dialog" aria-modal="true">
+    <div class="modal-card mobile-form-modal">
+      <div class="panel-title-row">
+        <div>
+          <p class="section-kicker">NEW QUOTE</p>
+          <h2 id="addQuoteModalTitle">✍️ 新增佳句</h2>
+        </div>
+        <button class="icon-btn" data-close-modal="addQuoteModal">×</button>
+      </div>
+
+      <div class="form-grid mobile-modal-form">
+        <label class="field">
+          <span>💬 佳句內容</span>
+          <textarea id="quoteText" placeholder="把想留下來的一句話記在這裡..."></textarea>
+        </label>
+        <label class="field">
+          <span>📄 頁碼（可不填）</span>
+          <input id="quotePage" type="number" min="1" placeholder="例如：128" />
+        </label>
+        <label class="field">
+          <span>📝 自己的小註記（可不填）</span>
+          <textarea id="quoteNote" class="compact-textarea" maxlength="300" placeholder="這句話讓你想到什麼？"></textarea>
+        </label>
+        <button id="addQuoteBtn" class="primary-btn full modal-save-btn">＋ 收藏這句</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 新增生活規劃 -->
+  <div id="addPlanModal" class="modal-backdrop hidden" role="dialog" aria-modal="true">
+    <div class="modal-card mobile-form-modal">
+      <div class="panel-title-row">
+        <div><p class="section-kicker">NEW PLAN</p><h2>🫧 新增生活規劃</h2></div>
+        <button class="icon-btn" data-close-modal="addPlanModal">×</button>
+      </div>
+      <div class="form-grid mobile-modal-form">
+        <label class="field"><span>要安排什麼？</span><input id="planTitle" type="text" placeholder="例如：鉤針 1 小時、看書、追劇" maxlength="120" /></label>
+        <label class="field"><span>日期</span><input id="planDate" type="date" /></label>
+        <label class="field"><span>時段</span><select id="planTimeMode"><option value="anytime">☁️ 任意時間</option><option value="morning">🌤️ 早上</option><option value="afternoon">🫧 下午</option><option value="evening">🌙 晚上</option><option value="specific">🕰️ 指定時間</option></select></label>
+        <label id="planSpecificTimeField" class="field hidden"><span>指定時間</span><input id="planSpecificTime" type="time" value="19:30" /></label>
+        <button id="addPlanBtn" class="primary-btn full modal-save-btn">＋ 儲存規劃</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 新增目標 -->
+  <div id="addGoalModal" class="modal-backdrop hidden" role="dialog" aria-modal="true">
+    <div class="modal-card mobile-form-modal">
+      <div class="panel-title-row">
+        <div><p class="section-kicker">NEW GOAL</p><h2>🎯 新增目標</h2></div>
+        <button class="icon-btn" data-close-modal="addGoalModal">×</button>
+      </div>
+      <div class="form-grid mobile-modal-form">
+        <label class="field"><span>目標名稱</span><input id="goalTitle" type="text" placeholder="例如：今年看完 20 本書" maxlength="120" /></label>
+        <label class="field"><span>目標週期</span><select id="goalPeriod"><option value="month">本月目標</option><option value="year">年度目標</option></select></label>
+        <label class="field"><span>單位</span><input id="goalUnit" type="text" placeholder="本 / 件 / 次 / 小時" maxlength="20" /></label>
+        <label class="field"><span>目標數量</span><input id="goalTarget" type="number" min="1" value="10" /></label>
+        <label class="field"><span>目前已完成</span><input id="goalCurrent" type="number" min="0" value="0" /></label>
+        <button id="addGoalBtn" class="primary-btn full modal-save-btn">＋ 儲存目標</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 加入新書 -->
+  <div id="addBookModal" class="modal-backdrop hidden" role="dialog" aria-modal="true">
+    <div class="modal-card mobile-form-modal">
+      <div class="panel-title-row">
+        <div><p class="section-kicker">NEW BOOK</p><h2>📖 加入書房</h2></div>
+        <button class="icon-btn" data-close-modal="addBookModal">×</button>
+      </div>
+      <div class="form-grid mobile-modal-form">
+        <label class="field"><span>書名</span><input id="bookTitle" type="text" placeholder="例如：過度努力" maxlength="160" /></label>
+        <label class="field"><span>作者（可不填）</span><input id="bookAuthor" type="text" placeholder="作者名稱" maxlength="100" /></label>
+        <label class="field"><span>總頁數</span><input id="bookTotalPages" type="number" min="1" placeholder="例如：320" /></label>
+        <label class="field"><span>目前看到第幾頁</span><input id="bookCurrentPage" type="number" min="0" value="0" /></label>
+        <button id="addBookBtn" class="primary-btn full modal-save-btn">＋ 加入書房</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 新增追蹤項目 -->
+  <div id="addTrackerModal" class="modal-backdrop hidden" role="dialog" aria-modal="true">
+    <div class="modal-card mobile-form-modal">
+      <div class="panel-title-row">
+        <div><p class="section-kicker">NEW TRACKER</p><h2>🌿 新增追蹤項目</h2></div>
+        <button class="icon-btn" data-close-modal="addTrackerModal">×</button>
+      </div>
+      <div class="form-grid mobile-modal-form">
+        <label class="field"><span>可愛 Icon</span><select id="trackerIcon"><option value="🌿">🌿 習慣</option><option value="📚">📚 閱讀</option><option value="🧶">🧶 鉤針</option><option value="🎬">🎬 追劇</option><option value="💧">💧 喝水</option><option value="☕">☕ 休息</option><option value="🧹">🧹 整理</option><option value="💼">💼 工作</option><option value="✨">✨ 其他</option></select></label>
+        <label class="field"><span>項目名稱</span><input id="trackerTitle" type="text" placeholder="例如：閱讀 20 分鐘" maxlength="120" /></label>
+        <label class="field"><span>目標週期</span><select id="trackerCycle"><option value="day">每天</option><option value="week">每週</option><option value="month">每月</option><option value="custom">自訂</option></select></label>
+        <label class="field"><span>時段</span><select id="trackerTimeMode"><option value="anytime">☁️ 任意</option><option value="morning">🌤️ 早上</option><option value="afternoon">🫧 下午</option><option value="evening">🌙 晚上</option><option value="specific">🕰️ 指定時間</option></select></label>
+        <label id="trackerSpecificTimeField" class="field hidden"><span>指定時間</span><input id="trackerSpecificTime" type="time" value="20:00" /></label>
+        <div id="weekCycleFields" class="cycle-box hidden"><label class="field"><span>每週目標次數</span><input id="weeklyTarget" type="number" min="1" max="7" value="2" /></label><div class="field"><span>固定星期（可不選＝彈性完成）</span><div id="weekdayPicker" class="weekday-picker"><label><input type="checkbox" value="1">一</label><label><input type="checkbox" value="2">二</label><label><input type="checkbox" value="3">三</label><label><input type="checkbox" value="4">四</label><label><input type="checkbox" value="5">五</label><label><input type="checkbox" value="6">六</label><label><input type="checkbox" value="0">日</label></div></div></div>
+        <div id="monthCycleFields" class="cycle-box hidden"><label class="field"><span>每月幾號</span><input id="monthDay" type="number" min="1" max="31" value="1" /></label></div>
+        <div id="customCycleFields" class="cycle-box hidden"><label class="field"><span>每隔幾天</span><input id="customIntervalDays" type="number" min="1" max="365" value="3" /></label><label class="field"><span>從哪天開始</span><input id="customStartDate" type="date" /></label></div>
+        <button id="addTrackerBtn" class="primary-btn full modal-save-btn">＋ 儲存項目</button>
       </div>
     </div>
   </div>
