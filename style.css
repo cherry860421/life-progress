@@ -1998,3 +1998,283 @@ footer {
     min-width:0;
   }
 }
+
+
+/* =========================
+   V4.4.1 手機字級 / 按鈕單行優化
+   ========================= */
+@media (max-width: 720px) {
+  /* 整體字級稍微收斂，避免手機響應式後顯得過大 */
+  html {
+    font-size: 15.5px;
+  }
+
+  body {
+    line-height: 1.55;
+  }
+
+  /* 首頁主標與各區標題 */
+  .hero h1 {
+    font-size: 1.72rem;
+    line-height: 1.18;
+  }
+
+  .hero h1 span {
+    font-size: .52em;
+  }
+
+  .hero-date {
+    font-size: .94rem;
+  }
+
+  .hero-note {
+    font-size: .82rem;
+  }
+
+  .eyebrow,
+  .section-kicker {
+    font-size: .66rem;
+  }
+
+  .panel h2,
+  .calendar-toolbar h2,
+  .modal-card h2,
+  .modal-card h3,
+  .auth-card h2 {
+    font-size: 1.12rem;
+    line-height: 1.35;
+  }
+
+  h3,
+  .item-title,
+  .manage-title,
+  .book-title,
+  .goal-title {
+    line-height: 1.4;
+  }
+
+  .panel {
+    padding: 15px;
+  }
+
+  .panel-title-row,
+  .calendar-toolbar {
+    gap: 9px;
+    margin-bottom: 12px;
+  }
+
+  /* 內文、說明文字稍微縮小 */
+  .manage-meta,
+  .item-sub,
+  .empty-state,
+  .helper-text,
+  .last-sync-text,
+  .cloud-account,
+  .week-plan-time,
+  .quote-meta,
+  .quote-note {
+    font-size: .74rem;
+  }
+
+  /* 所有按鈕文字維持單行 */
+  button,
+  .primary-btn,
+  .secondary-btn,
+  .danger-btn,
+  .text-btn,
+  .compact-btn,
+  .segment-btn,
+  .soft-badge {
+    white-space: nowrap;
+    word-break: keep-all;
+  }
+
+  /* 一般按鈕縮小左右留白，避免窄螢幕換行 */
+  .primary-btn {
+    min-height: 44px;
+    padding: 8px 12px;
+    font-size: .82rem;
+  }
+
+  .secondary-btn,
+  .danger-btn {
+    min-height: 40px;
+    padding: 7px 10px;
+    font-size: .78rem;
+  }
+
+  .compact-btn {
+    min-height: 34px;
+    padding: 5px 8px;
+    font-size: .7rem;
+  }
+
+  .text-btn {
+    padding-left: 4px;
+    padding-right: 4px;
+    font-size: .78rem;
+  }
+
+  .soft-badge {
+    min-height: 28px;
+    padding: 3px 8px;
+    font-size: .68rem;
+  }
+
+  /* 若同一排放不下，改成整顆按鈕換到下一排，而不是文字拆成兩行 */
+  .panel-title-row,
+  .calendar-toolbar,
+  .manage-actions,
+  .cloud-actions,
+  .modal-actions,
+  .quote-meta,
+  .book-actions,
+  .goal-actions {
+    flex-wrap: wrap;
+  }
+
+  .panel-title-row > *,
+  .calendar-toolbar > *,
+  .manage-actions > *,
+  .cloud-actions > *,
+  .modal-actions > * {
+    min-width: 0;
+  }
+
+  /* 底部導覽：圖示＋文字上下排列，字再收一點 */
+  .tabs {
+    min-height: 70px;
+  }
+
+  .tab-btn {
+    min-height: 56px;
+    padding: 5px 1px;
+    font-size: .72rem;
+    white-space: nowrap;
+  }
+
+  .nav-icon {
+    font-size: 1.22rem;
+    line-height: 1.05;
+  }
+
+  .nav-label {
+    font-size: .74rem;
+    line-height: 1.1;
+    white-space: nowrap;
+  }
+
+  /* 表單與彈窗也不要顯得太巨大 */
+  input,
+  select {
+    min-height: 46px;
+    padding: 9px 11px;
+    font-size: .88rem;
+  }
+
+  textarea {
+    min-height: 120px;
+    padding: 11px;
+    font-size: .88rem;
+  }
+
+  .modal-backdrop,
+  .auth-backdrop {
+    padding: 10px;
+  }
+
+  .modal-card,
+  .auth-card {
+    padding: 18px 15px;
+    border-radius: 20px;
+  }
+
+  /* 書房 / 佳句 / 本週卡片 */
+  .book-card,
+  .quote-card,
+  .week-day,
+  .item-card,
+  .manage-item {
+    border-radius: 15px;
+  }
+
+  .book-title,
+  .week-day h3 {
+    font-size: .94rem;
+  }
+
+  .quote-text {
+    font-size: .84rem;
+    line-height: 1.68;
+  }
+
+  .week-plan-title {
+    font-size: .84rem;
+  }
+
+  /* 月曆手機文字 */
+  .calendar-grid {
+    font-size: .82rem;
+  }
+
+  .weekday {
+    font-size: .7rem;
+  }
+
+  /* 登入同步列避免文字擠成兩行按鈕 */
+  .cloud-bar {
+    gap: 9px;
+    padding: 10px 11px;
+  }
+
+  .cloud-status-main strong {
+    font-size: .78rem;
+  }
+
+  /* segmented buttons 保持單行 */
+  .goals-segmented .segment-btn {
+    min-width: 0;
+    padding-left: 8px;
+    padding-right: 8px;
+    font-size: .76rem;
+  }
+}
+
+/* 非常窄的手機再縮一階，但仍維持按鈕文字單行 */
+@media (max-width: 390px) {
+  html {
+    font-size: 15px;
+  }
+
+  .hero h1 {
+    font-size: 1.58rem;
+  }
+
+  .panel h2,
+  .calendar-toolbar h2,
+  .modal-card h2,
+  .auth-card h2 {
+    font-size: 1.05rem;
+  }
+
+  .primary-btn {
+    padding-left: 9px;
+    padding-right: 9px;
+    font-size: .78rem;
+  }
+
+  .secondary-btn,
+  .danger-btn {
+    padding-left: 8px;
+    padding-right: 8px;
+    font-size: .74rem;
+  }
+
+  .nav-label {
+    font-size: .7rem;
+  }
+
+  .nav-icon {
+    font-size: 1.16rem;
+  }
+}

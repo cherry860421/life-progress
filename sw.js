@@ -1,4 +1,4 @@
-const CACHE_NAME = "life-experience-v4-4-static-v1";
+const CACHE_NAME = "life-experience-v4-4-1-static-v1";
 const STATIC_FILES = [
   "./",
   "./index.html",
