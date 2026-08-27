@@ -1950,3 +1950,51 @@ footer {
     min-height: 34px;
   }
 }
+
+
+/* V4.4 分享試用版 */
+.guest-mode-note{
+  margin-top:12px;
+  padding:12px 13px;
+  border-radius:14px;
+  background:#F5F9FD;
+  border:1px solid var(--border);
+  color:var(--muted);
+  font-size:.82rem;
+  line-height:1.55;
+}
+.guest-mode-note-title{
+  margin-bottom:4px;
+  color:var(--blue-deep);
+  font-weight:900;
+}
+.guest-mode-banner{
+  position:sticky;
+  top:0;
+  z-index:70;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:9px 14px;
+  background:#FFF9E9;
+  border-bottom:1px solid #F0DFC0;
+  color:#6C5A32;
+  font-size:.78rem;
+  font-weight:800;
+}
+.guest-mode-banner[hidden]{display:none!important;}
+.guest-mode-banner .small{
+  flex:0 0 auto;
+  min-height:34px;
+  padding:6px 10px;
+}
+@media(max-width:720px){
+  .guest-mode-banner{
+    font-size:.72rem;
+    padding:8px 10px;
+  }
+  .guest-mode-banner span{
+    min-width:0;
+  }
+}

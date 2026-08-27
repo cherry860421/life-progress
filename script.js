@@ -1,3 +1,11 @@
+
+function updateGuestModeBanner() {
+  const banner = document.getElementById("guestModeBanner");
+  if (!banner) return;
+  const isGuest = cloudState && cloudState.mode === "local";
+  banner.hidden = !isGuest;
+}
+
 const STORAGE_KEY = "life-progress-app-v4";
 const V3_KEY = "life-progress-app-v3";
 const V2_KEY = "life-progress-app-v2";
@@ -2294,3 +2302,16 @@ if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
     });
   });
 }
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  updateGuestModeBanner();
+  const guestLoginBtn = document.getElementById("guestLoginBtn");
+  if (guestLoginBtn) {
+    guestLoginBtn.addEventListener("click", () => {
+      const authOverlay = document.getElementById("authOverlay") || document.getElementById("auth-overlay");
+      if (authOverlay) authOverlay.hidden = false;
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  }
+});

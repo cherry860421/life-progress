@@ -4,11 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#3674B5" />
-  <title>生活體驗計劃 V4.3.1</title>
+  <title>生活體驗計劃 V4.4</title>
   <link rel="manifest" href="manifest.json" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+<div id="guestModeBanner" class="guest-mode-banner" hidden>
+  <span>🧪 目前是訪客試用模式｜資料只存在這台裝置</span>
+  <button type="button" id="guestLoginBtn" class="ghost small">登入同步</button>
+</div>
+
   <div class="app-shell">
     <header class="hero">
       <div class="hero-copy">
@@ -446,7 +451,7 @@
       </section>
     </main>
 
-    <footer>生活體驗計劃 V4.3.1 ・ Soft Blue Life Planner・Cloud Sync</footer>
+    <footer>生活體驗計劃 V4.4 ・ Soft Blue Life Planner・Cloud Sync</footer>
   </div>
 
 
@@ -478,6 +483,10 @@
         <div class="auth-secondary-actions">
           <button id="signUpBtn" class="secondary-btn" type="button">第一次使用：建立帳號</button>
           <button id="offlineModeBtn" class="text-btn" type="button">先用本機模式</button>
+            <div class="guest-mode-note">
+              <div class="guest-mode-note-title">🧪 訪客試用模式</div>
+              <div>不登入也能使用大部分功能，資料只會存在目前這台裝置的瀏覽器中，不會同步到其他裝置。</div>
+            </div>
         </div>
       </div>
 
